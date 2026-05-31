@@ -1,0 +1,136 @@
+====================================================
+        LARAVEL ARTISAN COMMANDS REFERENCE
+====================================================
+
+
+---- PROJECT SETUP ----------------------------------
+
+composer create-project laravel/laravel app-name   Create new Laravel project
+php artisan --version                               Show Laravel version
+php artisan key:generate                            Generate app encryption key
+php artisan env                                     Display current environment
+php artisan config:cache                            Cache configuration files
+php artisan config:clear                            Remove configuration cache
+
+
+---- SERVER -----------------------------------------
+
+php artisan serve                                   Start local dev server (127.0.0.1:8000)
+php artisan serve --port=8080                       Start server on custom port
+php artisan serve --host=0.0.0.0                    Expose to local network
+
+
+---- MAKE / GENERATE --------------------------------
+
+php artisan make:model ModelName                    Create Eloquent model
+php artisan make:model ModelName -mcr               Model + migration + controller (resource)
+php artisan make:controller NameController          Create controller
+php artisan make:controller NameController --resource  Resource controller (CRUD methods)
+php artisan make:controller NameController --api    API resource controller (no create/edit)
+php artisan make:migration create_table_name        Create migration file
+php artisan make:seeder NameSeeder                  Create database seeder
+php artisan make:factory NameFactory                Create model factory
+php artisan make:request NameRequest                Create form request (validation)
+php artisan make:middleware NameMiddleware           Create middleware
+php artisan make:policy NamePolicy                  Create authorization policy
+php artisan make:policy NamePolicy --model=Model    Policy bound to model
+php artisan make:event NameEvent                    Create event class
+php artisan make:listener NameListener              Create event listener
+php artisan make:job NameJob                        Create queued job
+php artisan make:mail NameMail                      Create mailable class
+php artisan make:notification NameNotification      Create notification class
+php artisan make:command NameCommand                Create custom Artisan command
+php artisan make:resource NameResource              Create API resource transformer
+php artisan make:rule NameRule                      Create validation rule
+php artisan make:provider NameProvider              Create service provider
+php artisan make:channel NameChannel                Create broadcast channel
+php artisan make:test NameTest                      Create test class
+php artisan make:test NameTest --unit               Create unit test class
+php artisan make:cast NameCast                      Create Eloquent cast class
+php artisan make:observer NameObserver              Create model observer
+php artisan make:scope NameScope                    Create Eloquent scope class
+
+
+---- MIGRATION / DATABASE ---------------------------
+
+php artisan migrate                                 Run pending migrations
+php artisan migrate:fresh                           Drop all tables & re-migrate
+php artisan migrate:fresh --seed                    Fresh migrate + run seeders
+php artisan migrate:rollback                        Rollback last migration batch
+php artisan migrate:rollback --step=3               Rollback last 3 batches
+php artisan migrate:reset                           Rollback all migrations
+php artisan migrate:refresh                         Rollback & re-migrate all
+php artisan migrate:refresh --seed                  Refresh + seed
+php artisan migrate:status                          Show migration status
+php artisan db:seed                                 Run all database seeders
+php artisan db:seed --class=UserSeeder              Run specific seeder
+php artisan db:wipe                                 Drop all tables, views, types
+
+
+---- ROUTING ----------------------------------------
+
+php artisan route:list                              List all registered routes
+php artisan route:list --path=api                   Filter routes by path prefix
+php artisan route:cache                             Cache routes for production
+php artisan route:clear                             Clear route cache
+
+
+---- CACHE ------------------------------------------
+
+php artisan cache:clear                             Clear application cache
+php artisan cache:forget key                        Remove specific cache key
+php artisan view:clear                              Clear compiled view files
+php artisan view:cache                              Compile all Blade templates
+php artisan event:clear                             Clear cached events/listeners
+php artisan optimize                                Cache config, routes & views
+php artisan optimize:clear                          Clear all cached data
+
+
+---- QUEUE / JOBS -----------------------------------
+
+php artisan queue:work                              Start queue worker
+php artisan queue:work --tries=3                    Worker with max attempt limit
+php artisan queue:listen                            Listen to queue (auto-reload)
+php artisan queue:retry all                         Retry all failed jobs
+php artisan queue:failed                            List failed jobs
+php artisan queue:flush                             Delete all failed jobs
+php artisan queue:table                             Create queue jobs table migration
+php artisan queue:failed-table                      Create failed_jobs table migration
+
+
+---- SCHEDULING -------------------------------------
+
+php artisan schedule:run                            Run scheduled tasks (cron calls this)
+php artisan schedule:list                           List all scheduled commands
+php artisan schedule:work                           Run scheduler locally (no cron)
+
+
+---- AUTH / STORAGE ---------------------------------
+
+php artisan storage:link                            Create public storage symlink
+php artisan auth:clear-resets                       Clear expired password reset tokens
+
+
+---- MAINTENANCE ------------------------------------
+
+php artisan down                                    Put app in maintenance mode
+php artisan down --secret=bypass123                 Maintenance mode with bypass token
+php artisan up                                      Bring app out of maintenance
+
+
+---- TINKER / DEBUG ---------------------------------
+
+php artisan tinker                                  Interactive REPL for the app
+php artisan inspire                                 Display an inspiring quote
+php artisan about                                   Show app environment overview (v9+)
+
+
+---- PACKAGES / VENDOR ------------------------------
+
+php artisan vendor:publish                          Publish vendor assets/config
+php artisan vendor:publish --tag=config             Publish only config files
+
+
+====================================================
+  Total: 70+ commands  |  laravel_commands.txt
+====================================================
