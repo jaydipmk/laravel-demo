@@ -20,3 +20,5 @@ Route::get('/', function () {
 
 Route::get('/admin/orders', [OrderController::class, 'dashboard'])
     ->name('admin.orders');
+
+Route::post('/admin/orders-data', [OrderController::class, 'getOrdersData'])->name('admin.orders.data');
