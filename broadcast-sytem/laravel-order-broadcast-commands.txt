@@ -4,6 +4,9 @@ Full Command List (in order)
 Stack: Laravel 10, jQuery, Bootstrap 5, Reverb (WebSocket), Public Channel, No Auth
 ====================================================================
 
+
+composer require yajra/laravel-datatables-oracle
+
 1. CREATE PROJECT
 --------------------------------------------------------------------
 composer create-project laravel/laravel:^10.0 order-broadcast-system
