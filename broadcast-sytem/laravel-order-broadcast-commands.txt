@@ -1,0 +1,155 @@
+====================================================================
+LARAVEL 10 - ORDER BROADCASTING SYSTEM
+Full Command List (in order)
+Stack: Laravel 10, jQuery, Bootstrap 5, Reverb (WebSocket), Public Channel, No Auth
+====================================================================
+
+1. CREATE PROJECT
+--------------------------------------------------------------------
+composer create-project laravel/laravel:^10.0 order-broadcast-system
+cd order-broadcast-system
+
+
+2. DATABASE CONFIG (.env)
+--------------------------------------------------------------------
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=order_broadcast_db
+DB_USERNAME=root
+DB_PASSWORD=
+
+(Create the "order_broadcast_db" database in phpMyAdmin first)
+
+
+3. CHECK PHP VERSION (Reverb needs PHP 8.2+, Laravel 10.47+)
+--------------------------------------------------------------------
+php -v
+php artisan --version
+
+(If Laravel is below 10.47, run:)
+composer update laravel/framework
+
+
+4. INSTALL REVERB (WebSocket server, self-hosted, no external account)
+--------------------------------------------------------------------
+composer require laravel/reverb
+php artisan reverb:install
+php artisan config:clear
+
+(This auto-adds REVERB_* keys to .env - no manual signup needed)
+
+
+5. GENERATE MIGRATIONS
+--------------------------------------------------------------------
+php artisan make:migration create_orders_table
+php artisan make:migration create_order_items_table
+
+(Paste orders/order_items table schema into these generated files)
+
+
+6. GENERATE MODELS
+--------------------------------------------------------------------
+php artisan make:model Order
+php artisan make:model OrderItem
+
+(Paste $fillable + relationships into these)
+
+
+7. GENERATE FORM REQUEST
+--------------------------------------------------------------------
+php artisan make:request StoreOrderRequest
+
+(Paste validation rules: customer_name, total_amount, items array)
+
+
+8. GENERATE EVENT
+--------------------------------------------------------------------
+php artisan make:event OrderPlaced
+
+(Implements ShouldBroadcast, broadcasts on public Channel('admin.orders'))
+
+
+9. GENERATE CONTROLLER
+--------------------------------------------------------------------
+php artisan make:controller OrderController
+
+(store() method + dashboard() method)
+
+
+10. RUN MIGRATIONS
+--------------------------------------------------------------------
+php artisan migrate
+
+
+11. ROUTES TO ADD MANUALLY (no artisan command - edit files directly)
+--------------------------------------------------------------------
+- routes/api.php        -> POST /orders route
+- routes/web.php         -> GET /admin/orders route (no auth middleware)
+- routes/channels.php    -> leave empty (public channel needs no auth entry)
+
+
+12. CREATE DASHBOARD VIEW FOLDER + FILE
+--------------------------------------------------------------------
+mkdir resources/views/admin
+
+(Then create resources/views/admin/orders-dashboard.blade.php manually
+ with Bootstrap 5 CDN + jQuery CDN + DataTables CDN + SweetAlert2 CDN
+ + pusher-js CDN, subscribing to public channel "admin.orders")
+
+
+13. CLEAR ALL CACHES (run after any .env / route / channel changes)
+--------------------------------------------------------------------
+php artisan config:clear
+php artisan route:clear
+php artisan cache:clear
+
+
+14. START THE WEBSOCKET SERVER (keep this terminal open/running)
+--------------------------------------------------------------------
+php artisan reverb:start
+
+
+15. SERVE THE APP (second terminal, or use XAMPP/Apache as usual)
+--------------------------------------------------------------------
+php artisan serve
+
+
+16. OPEN DASHBOARD IN BROWSER
+--------------------------------------------------------------------
+http://127.0.0.1:8000/admin/orders
+
+(Open browser console F12 to see Pusher connection logs)
+
+
+17. TEST WITH POSTMAN
+--------------------------------------------------------------------
+Method: POST
+URL:    http://127.0.0.1:8000/api/orders
+Headers:
+    Content-Type: application/json
+    Accept: application/json
+
+Body (raw JSON):
+{
+    "customer_name": "Rahul Sharma",
+    "total_amount": 650.00,
+    "items": [
+        { "item_name": "Chicken Biryani", "quantity": 2 },
+        { "item_name": "Cold Drink", "quantity": 3 },
+        { "item_name": "Gulab Jamun", "quantity": 4 }
+    ]
+}
+
+Expected: dashboard live feed + DataTable update instantly, no refresh.
+
+
+18. USEFUL DEBUG COMMANDS (if something fails)
+--------------------------------------------------------------------
+php artisan route:list --path=broadcasting
+tail -n 50 storage/logs/laravel.log
+(or open storage/logs/laravel.log directly)
+
+====================================================================
+END OF COMMAND LIST
+====================================================================
