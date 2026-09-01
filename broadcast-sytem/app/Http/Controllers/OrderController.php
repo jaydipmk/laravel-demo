@@ -41,6 +41,47 @@ class OrderController extends Controller
         ]);
     }
 
+    public function store(StoreOrderRequest $request)
+{
+    $validated = $request->validated();
+
+    try {
+        $order = DB::transaction(function () use ($validated) {
+            $order = Order::create([
+                'customer_name' => $validated['customer_name'],
+                'total_amount'  => $validated['total_amount'],
+                'status'        => 'pending',
+            ]);
+
+            foreach ($validated['items'] as $item) {
+                $order->items()->create([
+                    'item_name' => $item['item_name'],
+                    'quantity'  => $item['quantity'],
+                ]);
+            }
+
+            return $order;
+        });
+
+        broadcast(new OrderPlaced($order))->toOthers();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Order placed successfully',
+            'order'   => $order->load('items'),
+        ]);
+
+    } catch (\Exception $e) {
+
+        \Log::error('Order placement failed: ' . $e->getMessage());
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Something went wrong while placing the order',
+        ], 500);
+    }
+}
+
     public function dashboard1()
     {
         $orders = Order::with('items')->latest()->get();
